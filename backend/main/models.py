@@ -11,3 +11,7 @@ class CustomUser(AbstractUser):
 class BackImage(models.Model):
     image=models.TextField()
     user=models.ForeignKey(CustomUser,on_delete=models.CASCADE)
+
+class UserImage(models.Model):
+    user_image=models.TextField()
+    owner=models.ForeignKey(CustomUser,on_delete=models.CASCADE)
