@@ -1,12 +1,14 @@
-import styled from 'styled-components';
-import { Link } from 'react-router-dom';
-import logo from './Logo.svg';
-import click from './clickme.svg';
-import Outline from './components/Outline';
+import React, { useState } from "react";
+import styled from "styled-components";
+import logo from "./Logo.svg";
+import click from "./clickme.svg";
+import Outline from "./components/Outline";
+
+import LoginModal from "components/LoginModal";
 
 const Logo = styled.img`
-	width: 140px;
-`
+  width: 140px;
+`;
 
 const Content = styled.a`
   display: flex;
@@ -31,25 +33,30 @@ const Wrapper = styled.div`
   align-items: center;
   width: 100vw;
   height: 100vh;
-  background-color: #E8E5DF;
-
+  background-color: #e8e5df;
 `;
 
-const Intro = () => (
-  <>
-    <Wrapper>
-      <SubWrapper>
-        <Content>
-          <Outline />
-        </Content>
-        <Link to="/Login">
-          <Logo src={logo} />
-        </Link>
-          <img src={click} width="120px"/>
-      </SubWrapper>
+const Intro = () => {
+  const [loginModalopened, setLoginModalopened] = useState(false);
 
-    </Wrapper>
-  </>
-);
+  const openLoginModal = () => {
+    setLoginModalopened(true);
+  };
+
+  return (
+    <>
+      <LoginModal setOpen={setLoginModalopened} open={loginModalopened} />
+      <Wrapper>
+        <SubWrapper>
+          <Content>
+            <Outline />
+          </Content>
+          <Logo src={logo} onClick={openLoginModal} />
+          <img src={click} width="120px" />
+        </SubWrapper>
+      </Wrapper>
+    </>
+  );
+};
 
 export default Intro;
