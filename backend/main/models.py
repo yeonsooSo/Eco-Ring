@@ -5,6 +5,8 @@ from django.contrib.auth.models import AbstractUser
 
 class CustomUser(AbstractUser):
     # Any extra fields would go here
+    image_count = models.IntegerField(default=0)
+
     def __str__(self):
         return self.email
 
