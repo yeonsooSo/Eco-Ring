@@ -10,7 +10,7 @@ const Wrapper = styled.div`
 `;
 
 const Text = styled.div`
-  line-height: 1.2;
+  line-height: 1.4;
   font-size: 20pt;
   color: black;
   font-weight: 800;
