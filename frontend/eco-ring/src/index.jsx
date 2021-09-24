@@ -1,9 +1,10 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { createGlobalStyle } from 'styled-components';
-import reset from 'styled-reset';
-import Router from './routes';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom";
+import { createGlobalStyle } from "styled-components";
+import reset from "styled-reset";
+import Router from "./routes";
+import reportWebVitals from "./reportWebVitals";
+import "styles/styles.css";
 
 const GlobalStyles = createGlobalStyle`
   ${reset}
@@ -12,7 +13,7 @@ const GlobalStyles = createGlobalStyle`
   }
   * {
     box-sizing: border-box;
-    font-family: 'Spoqa Han Sans Neo', 'sans-serif' !important;
+    font-family: 'NS-R', 'sans-serif';
     outline: none;
   }
 `;
@@ -22,7 +23,7 @@ ReactDOM.render(
     <GlobalStyles />
     <Router />
   </React.StrictMode>,
-  document.getElementById('root'),
+  document.getElementById("root")
 );
 
 reportWebVitals();
