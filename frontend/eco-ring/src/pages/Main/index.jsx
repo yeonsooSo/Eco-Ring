@@ -34,9 +34,8 @@ const Main = () => (
           <Margin size={40} />
 
           {/* 모자이크 사진 부분 */}
-          <img src={logo} width="320px" height="320px"/>
-
-          <Margin size={50} />
+          <img src={logo} width="330px" height="330px"/>
+          <Margin size={55} />
 
           {/* 파일 업로드 버튼 */}
           <img src={logo} width="50px"/>
