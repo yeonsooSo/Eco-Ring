@@ -7,7 +7,7 @@ const Container = styled.div`
   width: 100%;
   padding: 30px;
   background-color: white;
-  border-top-left-radius: 70px;
+  border-top-left-radius: 60px;
   overflow: scroll;
   transition: top 0.5s;
   &::-webkit-scrollbar {

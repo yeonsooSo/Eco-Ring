@@ -5,6 +5,7 @@ import ecoring from './Eco-ring-white.svg';
 import Margin from '../../Margin';
 import logo from './Logo.svg';
 import save from './Save.svg';
+import share from "./Share.png";
 
 const Content = styled.a`
   display: flex;
@@ -26,8 +27,8 @@ const Wrapper = styled.div`
 
 const Mosaic = styled.div`
   background-color: tomato;
-  width: 60%;
-  padding-bottom: 60%;
+  width: 360px;
+  height: 360px;
 `;
 
 const Main = () => (
@@ -49,7 +50,7 @@ const Main = () => (
           
           <img src={save} width="180px" />
           <Margin size={30} />
-
+          <img src={share} width="140px" cursor="pointer" />
         </Content>
       </Container>
     </Wrapper>
