@@ -4,7 +4,7 @@ from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
 from .forms import CustomUserChangeForm, CustomUserCreationForm
-from .models import CustomUser, BackImage, UserImage
+from .models import CustomUser, BackImage, UserImage, OriginBackImage
 from django.utils.translation import gettext, gettext_lazy as _
 
 @admin.register(CustomUser)
@@ -27,6 +27,11 @@ class CustomUserAdmin(UserAdmin):
 @admin.register(BackImage)
 class BackImageAdmin(admin.ModelAdmin):
     pass
+
+@admin.register(OriginBackImage)
+class BackImageAdmin(admin.ModelAdmin):
+    pass
+
 
 @admin.register(UserImage)
 class UserImageAdmin(admin.ModelAdmin):

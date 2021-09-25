@@ -19,7 +19,7 @@ class ImageConverter:
     return base64.b64encode(jpg_img[1]).decode('utf-8')
 
   @classmethod
-  def convert(cls, bg, img, idx):
+  def convert(cls, bg, origin, img, idx):
 
     # 배경 이미지 불러와서 자르고 리사이즈
     bg = cls.stringToRGB(bg)
@@ -27,6 +27,13 @@ class ImageConverter:
     bg_size = min(bg_h, bg_w)
     bg = bg[(bg_h - bg_size)//2:(bg_h - bg_size)//2+ bg_size , (bg_w - bg_size)//2:(bg_w - bg_size)//2 + bg_size]
     bg = cv2.resize(bg, dsize=(800, 800), interpolation=cv2.INTER_AREA)
+
+    # 원본배경
+    origin = cls.stringToRGB(origin)
+    origin_h, origin_w, origin_C = origin.shape
+    origin_size = min(origin_h, origin_w)
+    origin = origin[(origin_h - origin_size)//2:(origin_h - origin_size)//2+ origin_size , (origin_w - origin_size)//2:(origin_w - origin_size)//2 + origin_size]
+    origin = cv2.resize(origin, dsize=(800, 800), interpolation=cv2.INTER_AREA)
 
     # 유저 이미지 불러와서 자르고 리사이즈
     user = cls.stringToRGB(img)

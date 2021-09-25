@@ -1,8 +1,8 @@
 from django.db.models.query import QuerySet
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404
-from .models import BackImage, UserImage, CustomUser
-from .serializers import BackImageSerializer, UserImageSerializer
+from .models import BackImage, UserImage, CustomUser, OriginBackImage
+from .serializers import BackImageSerializer, UserImageSerializer, OriginBackImageSerializer
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from .image_converter import ImageConverter
@@ -27,6 +27,9 @@ class BackImageSet(viewsets.ModelViewSet):
         back_imgs = BackImage.objects.all().last()
         back_imgs.user = request.user
         back_imgs.save()
+
+        origin = OriginBackImage(user=request.user, image=back_imgs.image)
+
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
     def list(self, request, *args, **kwargs):
@@ -38,7 +41,42 @@ class BackImageSet(viewsets.ModelViewSet):
             return self.get_paginated_response(serializer.data)
 
         serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data[-1])
+
+        if len(serializer.data):
+            return Response(serializer.data[-1])
+        else:
+            return Response(serializer.data)
+
+class OriginBackImageSet(viewsets.ModelViewSet):
+    queryset=OriginBackImage.objects.all()
+    serializer_class=OriginBackImageSerializer
+    authentication_classes = [SessionAuthentication]
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+
+        ori_back_imgs = OriginBackImage.objects.all().last()
+        ori_back_imgs.user = request.user
+        ori_back_imgs.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        queryset = queryset.filter(user=request.user)
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        
+        if len(serializer.data):
+            return Response(serializer.data[-1])
+        else:
+            return Response(serializer.data)
 
 class UserImageSet(viewsets.ModelViewSet):
     queryset=UserImage.objects.all()
