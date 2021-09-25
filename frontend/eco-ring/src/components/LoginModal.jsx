@@ -3,7 +3,7 @@ import { Modal, Grid, Form, Icon, ModalContent } from "semantic-ui-react";
 import styled from "styled-components";
 import useInput from "hooks/useInput";
 import logo from "pages/Intro/Eco-ring.svg";
-
+import { useHistory } from "react-router";
 import userAPI from "api/userAPI";
 
 const ReportModal = styled(Modal)`
@@ -58,14 +58,14 @@ const Field = styled(Form.Field)`
   }
 `;
 
-const LoginModal = (props, { history }) => {
-  const [state, setState] = useState(false);
-
+const LoginModal = (props) => {
   const [onLogin, setOnLogin] = useState(true);
   const [username, onChangeUsername, setUsername] = useInput("");
   const [email, onChangeEmail, setEmail] = useInput("");
   const [password1, onChangePassword1, setPassword1] = useInput("");
   const [password2, onChangePassword2, setPassword2] = useInput("");
+
+  const history = useHistory();
 
   const cleanInput = () => {
     setUsername("");
@@ -84,6 +84,45 @@ const LoginModal = (props, { history }) => {
     setOnLogin(!onLogin);
   };
 
+  const handleLogin = async (event) => {
+    event.preventDefault();
+    await userAPI
+      .authLogin({
+        email: email,
+        password: password1,
+      })
+      .then((result) => {
+        console.log(result);
+        window.sessionStorage.setItem("key", result.data.key);
+        history.push({
+          pathname: "/main",
+          state: { key: result.data.key },
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const justLogin = async () => {
+    await userAPI
+      .authLogin({
+        email: email,
+        password: password1,
+      })
+      .then((result) => {
+        console.log(result);
+        window.sessionStorage.setItem("key", result.data.key);
+        history.push({
+          pathname: "/main",
+          state: { key: result.data.key },
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const handleRegister = async (event) => {
     event.preventDefault();
     await userAPI
@@ -95,24 +134,12 @@ const LoginModal = (props, { history }) => {
       })
       .then((result) => {
         console.log(result);
-        window.sessionStorage.setItem("key", result.data.key);
-        history.push({
-          pathname: "/main",
-          state: {
-            user: result.data,
-          },
-        });
+        justLogin();
+        cleanInput();
+      })
+      .catch((err) => {
+        console.log(err);
       });
-    // .catch((err) => {
-    //   if (err.response.status === 400) {
-    //     alert("정보를 정확히 작성해주세요");
-    //   } else if (err.response.status === 500) {
-    //     alert("서버 에러입니다. 잠시 후 다시 시도해 주십시오.");
-    //   } else {
-    //     throw err;
-    //   }
-    // }
-    // );
   };
 
   return (
@@ -137,7 +164,7 @@ const LoginModal = (props, { history }) => {
           >
             <ModalTitle>로그인</ModalTitle>
           </ModalHeader>
-          <Form>
+          <Form onSubmit={handleLogin}>
             <Grid.Column>
               <Field
                 fluid
@@ -157,7 +184,7 @@ const LoginModal = (props, { history }) => {
               />
               <Form.Button
                 fluid
-                type="button"
+                type="submit"
                 content="로그인"
                 style={{
                   padding: "1rem 0",
