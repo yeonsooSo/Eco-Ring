@@ -10,10 +10,14 @@ class CustomUser(AbstractUser):
     def __str__(self):
         return self.email
 
+    def up_count(self):
+        self.image_count += 1
+        self.save()
+
 class BackImage(models.Model):
     image=models.TextField()
-    user=models.ForeignKey(CustomUser,on_delete=models.CASCADE)
+    user=models.ForeignKey(CustomUser,on_delete=models.CASCADE, null=True)
 
 class UserImage(models.Model):
     user_image=models.TextField()
-    owner=models.ForeignKey(CustomUser,on_delete=models.CASCADE)
+    owner=models.ForeignKey(CustomUser,on_delete=models.CASCADE, null=True)

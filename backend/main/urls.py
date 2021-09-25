@@ -3,20 +3,12 @@ from .views import BackImageSet, UserImageSet
 from . import views
 from rest_framework.routers import DefaultRouter
 
-image_list=BackImageSet.as_view({
-    'get':'list',
-    'post':'create'
-})
-
-user_image_list=UserImageSet.as_view({
-    'get':'list',
-    'post':'create'
-
-})
+router = DefaultRouter()
+router.register(r'image',views.BackImageSet)
+router.register(r'user_image',views.UserImageSet)
 
 urlpatterns = [
     path('auth/', include('rest_auth.urls')),
     path('auth/register/', include('rest_auth.registration.urls')),
-    path('image/',image_list),
-    path('user_image/',user_image_list),
+    path('', include(router.urls)),
 ]
