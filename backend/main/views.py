@@ -95,10 +95,10 @@ class UserImageSet(viewsets.ModelViewSet):
         origin_back_img = OriginBackImage.objects.filter(user = request.user).last()
 
         user = CustomUser.objects.filter(id = request.user.id).first()
-        user.up_count()
 
         back_img.image = ImageConverter.convert(back_img.image.encode(), origin_back_img.image.encode(), serializer.data['user_image'].encode(), user.image_count)
         back_img.save()
+        user.up_count()
 
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
  
