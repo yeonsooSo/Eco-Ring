@@ -7,7 +7,8 @@ import { useHistory } from "react-router";
 import userAPI from "api/userAPI";
 
 const ReportModal = styled(Modal)`
-  max-width: 25rem;
+  width: 400px;
+  max-width: 400px;
 `;
 
 const ModalHeader = styled.div`
@@ -93,10 +94,10 @@ const LoginModal = (props) => {
       })
       .then((result) => {
         console.log(result);
-        window.sessionStorage.setItem("key", result.data.key);
+        window.sessionStorage.setItem("email", email);
         history.push({
           pathname: "/main",
-          state: { key: result.data.key },
+          state: { email: email },
         });
       })
       .catch((err) => {
@@ -112,10 +113,10 @@ const LoginModal = (props) => {
       })
       .then((result) => {
         console.log(result);
-        window.sessionStorage.setItem("key", result.data.key);
+        window.sessionStorage.setItem("email", email);
         history.push({
           pathname: "/main",
-          state: { key: result.data.key },
+          state: { email: email },
         });
       })
       .catch((err) => {
@@ -224,7 +225,7 @@ const LoginModal = (props) => {
                 required
                 value={username}
                 onChange={onChangeUsername}
-                label="닉네임"
+                label="아이디"
                 control={Form.Input}
               />
               <Field
