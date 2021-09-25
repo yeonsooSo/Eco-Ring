@@ -4,6 +4,8 @@ import styled from "styled-components";
 import useInput from "hooks/useInput";
 import logo from "pages/Intro/Eco-ring.svg";
 
+import userAPI from "api/userAPI";
+
 const ReportModal = styled(Modal)`
   max-width: 25rem;
 `;
@@ -56,7 +58,9 @@ const Field = styled(Form.Field)`
   }
 `;
 
-const LoginModal = (props) => {
+const LoginModal = (props, { history }) => {
+  const [state, setState] = useState(false);
+
   const [onLogin, setOnLogin] = useState(true);
   const [username, onChangeUsername, setUsername] = useInput("");
   const [email, onChangeEmail, setEmail] = useInput("");
@@ -78,6 +82,37 @@ const LoginModal = (props) => {
   const switchOnLogin = () => {
     cleanInput();
     setOnLogin(!onLogin);
+  };
+
+  const handleRegister = async (event) => {
+    event.preventDefault();
+    await userAPI
+      .authRegister({
+        username: username,
+        email: email,
+        password1: password1,
+        password2: password2,
+      })
+      .then((result) => {
+        console.log(result);
+        window.sessionStorage.setItem("key", result.data.key);
+        history.push({
+          pathname: "/main",
+          state: {
+            user: result.data,
+          },
+        });
+      });
+    // .catch((err) => {
+    //   if (err.response.status === 400) {
+    //     alert("정보를 정확히 작성해주세요");
+    //   } else if (err.response.status === 500) {
+    //     alert("서버 에러입니다. 잠시 후 다시 시도해 주십시오.");
+    //   } else {
+    //     throw err;
+    //   }
+    // }
+    // );
   };
 
   return (
@@ -155,7 +190,7 @@ const LoginModal = (props) => {
           >
             <ModalTitle>회원가입</ModalTitle>
           </ModalHeader>
-          <Form>
+          <Form onSubmit={handleRegister}>
             <Grid.Column>
               <Field
                 fluid
@@ -176,6 +211,7 @@ const LoginModal = (props) => {
               <Field
                 fluid
                 required
+                type="password"
                 value={password1}
                 onChange={onChangePassword1}
                 label="비밀번호"
@@ -184,6 +220,7 @@ const LoginModal = (props) => {
               <Field
                 fluid
                 required
+                type="password"
                 value={password2}
                 onChange={onChangePassword2}
                 label="비밀번호 확인"
@@ -191,7 +228,7 @@ const LoginModal = (props) => {
               />
               <Form.Button
                 fluid
-                type="button"
+                type="submit"
                 content="회원가입"
                 style={{
                   padding: "1rem 0",
