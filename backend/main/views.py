@@ -29,6 +29,7 @@ class BackImageSet(viewsets.ModelViewSet):
         back_imgs.save()
 
         origin = OriginBackImage(user=request.user, image=back_imgs.image)
+        origin.save()
 
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
