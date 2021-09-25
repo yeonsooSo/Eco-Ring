@@ -44,19 +44,20 @@ class ImageConverter:
 
     # bg에 사진 들어갈 부분 roi 설정
     roi = user[0:40, 0:40]
-    dst = bg.copy()
+    dst = origin.copy()
     roi_x = idx % 20 * 40
     roi_y = idx // 20 * 40
 
     # roi 영역에 들어갈 사진 색감 입히기
-    roi = cv2.addWeighted(roi, 0.4, dst[roi_y:roi_y + 40, roi_x:roi_x + 40], 0.6, 1)
+    roi = cv2.addWeighted(roi, 0.4, origin[roi_y:roi_y + 40, roi_x:roi_x + 40], 0.6, 1)
 
     # 백그라운드 이미지 그레이스케일  변환
     dst = cv2.cvtColor(dst, cv2.COLOR_BGR2GRAY)
     dst = cv2.cvtColor(dst, cv2.COLOR_GRAY2BGR)
 
     # roi 영역 이미지
-    dst[roi_y:roi_y + 40, roi_x:roi_x + 40] = roi
-    dst = cls.RGBTostring(dst)
+    result = bg.copy()
+    bg[roi_y:roi_y + 40, roi_x:roi_x + 40] = roi
+    bg = cls.RGBTostring(bg)
 
-    return dst
+    return bg

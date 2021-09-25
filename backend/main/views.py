@@ -85,19 +85,20 @@ class UserImageSet(viewsets.ModelViewSet):
     # authentication_classes = [JWTAuthentication, SessionAuthentication]
     authentication_classes = [SessionAuthentication]
 
-
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
 
-        back_img = BackImage.objects.filter(user = request.user).first()
-        back_img.image = ImageConverter.convert(back_img.image.encode(), serializer.data['user_image'].encode(), request.user.image_count)
-        back_img.save()
-        
+        back_img = BackImage.objects.filter(user = request.user).last()
+        origin_back_img = OriginBackImage.objects.filter(user = request.user).last()
+
         user = CustomUser.objects.filter(id = request.user.id).first()
         user.up_count()
+
+        back_img.image = ImageConverter.convert(back_img.image.encode(), origin_back_img.image.encode(), serializer.data['user_image'].encode(), user.image_count)
+        back_img.save()
 
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
  
