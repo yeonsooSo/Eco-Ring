@@ -29,11 +29,16 @@ class BackImageSet(viewsets.ModelViewSet):
         back_imgs.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
-    # def retrieve(self, request, *args, **kwargs):
-    #     image = BackImage.objects.filter(user=request.user).first()
-    #     serializer = BackImageSerializer(image)
-    
-    #     return Response(serializer.data)
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        queryset = queryset.filter(user=request.user)
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data[-1])
 
 class UserImageSet(viewsets.ModelViewSet):
     queryset=UserImage.objects.all()
