@@ -14,7 +14,7 @@ const Text = styled.div`
   font-size: 20pt;
   color: black;
   font-weight: 800;
-  margin-bottom: 120px;
+  margin-bottom: 200px;
   font-family: 'Noto Sans KR', sans-serif;
 `;
 

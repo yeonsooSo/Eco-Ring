@@ -5,7 +5,7 @@ const Progress_bar = ({progress,height}) => {
 	
 	const Parentdiv = {
 		height: height,
-		width: '86%',
+		width: 360,
 		backgroundColor: 'whitesmoke',
 		borderRadius: 40,
 		margin: 10,
