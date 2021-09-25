@@ -178,6 +178,7 @@ const LoginModal = (props) => {
               <Field
                 fluid
                 required
+                type="password"
                 value={password1}
                 onChange={onChangePassword1}
                 label="비밀번호"

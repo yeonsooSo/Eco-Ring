@@ -11,6 +11,7 @@ import { Button } from "semantic-ui-react";
 import UploadModal from "components/UploadModal";
 import BackImgAPI from "api/BackImgAPI";
 import { useHistory } from "react-router";
+import photo from "./photo.png";
 
 const Content = styled.a`
   display: flex;
@@ -79,15 +80,9 @@ const Main = (props) => {
             <Margin size={40} />
 
             {/* 모자이크 사진 부분 */}
-            {mosaic === "" ? (
-              <div>
-                <MosaicBg>설정된 사진이 없습니다.</MosaicBg>
-              </div>
-            ) : (
-              <div>
-                <Mosaic src={mosaic} />
-              </div>
-            )}
+            <div>
+              <Mosaic src={photo} />
+            </div>
             <Margin size={55} />
 
             {mosaic === "" ? (
